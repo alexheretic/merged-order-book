@@ -532,19 +532,9 @@ checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
 name = "merged-order-book"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "approx",
  "axum",
- "merged-order-book-grpc",
- "merged-order-book-protos",
- "serde_json",
- "tokio",
-]
-
-[[package]]
-name = "merged-order-book-grpc"
-version = "0.1.0"
-dependencies = [
- "anyhow",
  "futures-util",
  "merged-order-book-protos",
  "serde",

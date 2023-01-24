@@ -11,9 +11,8 @@ Example grpc server project that merges order book bids/asks from binance & bits
 
 ## Project structure
 ```
-├── tests (scenario tests)
-├── protos (protobuf service contracts)
-└── grpc (grpc server impl)
+. (grpc server impl)
+└── protos (protobuf crate)
 ```
 
 ## Config
@@ -33,4 +32,4 @@ cargo test
 Note: Scenario is sufficent to test behaviour of grpc logic without additional unit tests.
 
 ## Run
-Run the grpc server with `cargo run -p merged-order-book-grpc`.
+Run the grpc server with `cargo run --release`.

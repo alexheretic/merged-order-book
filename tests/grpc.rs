@@ -68,7 +68,7 @@ async fn grpc() {
     let grpc_port = util::random_open_port().await;
     env::set_var("GRPC_PORT", grpc_port.to_string());
     tokio::spawn(async {
-        if let Err(err) = merged_order_book_grpc::start().await {
+        if let Err(err) = merged_order_book::start().await {
             eprintln!("{err}");
         }
     });
