@@ -3,12 +3,14 @@ use std::sync::{Arc, Mutex};
 use tokio::sync::broadcast;
 
 /// Multiple same-currency summary merging broadcaster.
+///
+/// Merges all summaries into a combined top 10.
 #[derive(Debug)]
-pub struct SummaryMerger {
+pub struct Top10SummaryMerger {
     pub tx: broadcast::Sender<Summary>,
 }
 
-impl SummaryMerger {
+impl Top10SummaryMerger {
     /// Listen to multiple broadcaster merging and re-broadcasting.
     ///
     /// Note: All summaries must be the same currencies.

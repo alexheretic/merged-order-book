@@ -2,7 +2,7 @@ mod binance;
 mod bitstamp;
 mod merger;
 
-use crate::{binance::BinanceClient, bitstamp::BitstampClient, merger::SummaryMerger};
+use crate::{binance::BinanceClient, bitstamp::BitstampClient, merger::Top10SummaryMerger};
 use futures_util::{Stream, StreamExt};
 use merged_order_book_protos::orderbook_aggregator_server::OrderbookAggregatorServer;
 use std::{env, pin::Pin};
@@ -16,7 +16,8 @@ pub async fn start() -> anyhow::Result<()> {
         BinanceClient::start("ethbtc"),
         BitstampClient::start("ethbtc"),
     )?;
-    let merger = SummaryMerger::listen_to(vec![binance.tx.subscribe(), bitstamp.tx.subscribe()]);
+    let merger =
+        Top10SummaryMerger::listen_to(vec![binance.tx.subscribe(), bitstamp.tx.subscribe()]);
 
     let service = OrderbookAggregatorServer::new(GrcServer { events: merger });
 
@@ -37,7 +38,7 @@ pub async fn start() -> anyhow::Result<()> {
 
 #[derive(Debug)]
 pub struct GrcServer {
-    events: SummaryMerger,
+    events: Top10SummaryMerger,
 }
 
 #[tonic::async_trait]
