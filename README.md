@@ -2,11 +2,11 @@
 Example grpc server project that merges order book bids/asks from binance & bitstamp etcbtc exchanges into a top 10.
 
 ```
-                 +------------------------+
-                 |                        | <--websocket-- binance
-<--grpc-stream-- | merged-order-book-grpc |
-                 |                        | <--websocket-- bitstamp 
-                 +------------------------+
+                 +-------------------+
+                 |                   | <--websocket-- binance
+<--grpc-stream-- | merged-order-book |
+                 |                   | <--websocket-- bitstamp 
+                 +-------------------+
 ```
 
 ## Project structure
@@ -60,7 +60,7 @@ Open http://localhost:7000.
 
   It would also be possible to lazily startup subscriptions, though this could introduce a class of errors after startup. Also kill subscriptions if there are no clients. This may make sense if the grpc service expects few clients, or supports many currencies some of which may have few clients.
 
-* Exchange websockets will auto re-connect on close. However, there's no handling of custom re-connect messages or connection-open-but-not-working detection. This is left out to in the interests of simplicity and impl time.
+* Exchange websockets will auto re-connect on close. However, there's no handling of custom re-connect messages or connection-open-but-not-working detection. This is left out to in the interest of simplicity and impl time.
 
 * Note: The _service.proto_ definition is part of the example setup, rather than a choice.
 
@@ -68,8 +68,8 @@ Open http://localhost:7000.
 
 * Prices & amounts are converted to f64 from the exchange string values. This could cause accuracy errors. However, since the protos enforce the use of double/f64 and no manipulation is happening, no additional inaccuracy will be caused. It would be more appropriate to use a decimal type with better guarantees than f64.
 
-* Tracing / logging is absent. There are some `eprintln!` calls that could be trivially replaced with `tracing::info!` and tracing can integrated into websocket clients & grpc. This is left out to in the interests of simplicity and impl time.
+* Tracing / logging is absent. There are some `eprintln!` calls that could be trivially replaced with `tracing::info!` and tracing can integrated into websocket clients & grpc. This is left out to in the interest of simplicity and impl time.
 
-* No metrics. A prometheus endpoint can provide metrics for the grpc server and websocket clients and perhaps track latency. This is left out to in the interests of simplicity and impl time.
+* No metrics. A prometheus endpoint can provide metrics for the grpc server and websocket clients and perhaps track latency. This is left out to in the interest of simplicity and impl time.
 
 * Dockerfile & kubernetes config are left out for simplicity.
