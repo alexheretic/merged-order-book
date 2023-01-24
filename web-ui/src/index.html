@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<!-- Adapted from https://www.bitstamp.net/s/webapp/examples/order_book_v2.html -->
+<head>
+    <title>Top 10 live order book example</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            width: 810px;
+            margin: 0 auto;
+            color: #ddd;
+            background: #222;
+        }
+
+        #spread {
+            font-size: 25px;
+            color: #bbb;
+            margin: 20px 0 0 0;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 30px;
+            color: #bbb;
+            margin: 0 0 20px 0;
+            text-align: center;
+        }
+
+        .column {
+            width: 400px;
+            display: inline-block;
+        }
+
+        .column h2 {
+            text-align: left;
+        }
+
+        .column:nth-child(3) h2 {
+            text-align: right;
+        }
+
+        .column:nth-child(3) div {
+            text-align: right;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Bitstamp & Binance top 10 order book</h1>
+    <div class="column">
+        <h2>Bids</h2>
+        <div id="bids_placeholder"></div>
+    </div>
+    <div class="column">
+        <h2>Asks</h2>
+        <div id="asks_placeholder"></div>
+    </div>
+    <div id="spread"></div>
+    <script type="text/javascript">
+        const bidsPlaceholder = document.getElementById("bids_placeholder");
+        const asksPlaceholder = document.getElementById("asks_placeholder");
+        const spreadDiv = document.getElementById("spread");
+
+        var ws;
+        initWebsocket();
+
+        function updateDom(ev) {
+            bidsPlaceholder.innerHTML = '';
+            asksPlaceholder.innerHTML = '';
+            for (const bid of ev.bids) {
+                bidsPlaceholder.innerHTML += `${bid.amount.toFixed(6)} ETH @ ${bid.price.toFixed(6)} BTC (${bid.exchange}) <br/>`;
+            }
+            for (const ask of ev.asks) {
+                asksPlaceholder.innerHTML += `(${ask.exchange}) ${ask.amount.toFixed(6)} ETH @ ${ask.price.toFixed(6)} BTC <br/>`;
+            }
+            spreadDiv.innerHTML = `Spread ${ev.spread.toFixed(6)} BTC`;
+        }
+
+        function initWebsocket() {
+            ws = new WebSocket("ws://localhost:7000/ws");
+            ws.onmessage = function (evt) {
+                const ev = JSON.parse(evt.data);
+                updateDom(ev)
+
+            };
+            ws.onclose = function () {
+                console.log('Websocket connection closed');
+                initWebsocket();
+            };
+        }
+    </script>
+</body>
+
+</html>

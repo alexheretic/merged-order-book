@@ -12,7 +12,8 @@ Example grpc server project that merges order book bids/asks from binance & bits
 ## Project structure
 ```
 . (grpc server impl)
-└── protos (protobuf crate)
+├── protos (protobuf crate)
+└── web-ui (add-on webapp ui)
 ```
 
 ## Config
@@ -32,7 +33,22 @@ cargo test
 Note: Scenario is sufficent to test behaviour of grpc logic without additional unit tests.
 
 ## Run
-Run the grpc server with `cargo run --release`.
+Run the grpc server with 
+
+```sh
+cargo run --release
+```
+
+### Web UI
+The merged live top 10 can be viewed using the _web-ui_ project. With the grpc server running run:
+
+```sh
+cargo run -p merged-order-book-web-ui --release
+```
+
+Open http://localhost:7000.
+
+![](webui.png "Web UI")
 
 ## Implementation notes
 * Only "etcbtc" is supported for simplicity. The service could be extended to support configurable / multiple.

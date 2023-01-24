@@ -1,0 +1,14 @@
+[package]
+name = "merged-order-book-web-ui"
+version = "0.1.0"
+authors = ["Alex Butler <alexheretic@gmail.com>"]
+edition = "2021"
+publish = false
+
+[dependencies]
+merged-order-book-protos = { path = "../protos" }
+
+axum = { version = "0.6.3", features = ["ws"] }
+serde_json = "1.0.91"
+tokio = { version = "1.24.2", features = ["rt-multi-thread", "macros"] }
+tonic = "0.8.3"
